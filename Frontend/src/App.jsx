@@ -25,7 +25,7 @@ function App() {
     const verifyCookie = async () => {
       //!cookies.token
       let {token}=Cookies.get();
-      const { data } = await axios.post("http://localhost:1919/auth",{token});
+      const { data } = await axios.post("https://lostfound-3b7h.onrender.com/auth",{token});
       const { status, user } = data;
       if(status){
        
