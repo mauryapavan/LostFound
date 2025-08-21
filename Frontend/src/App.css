@@ -1,0 +1,116 @@
+@import "tailwindcss";
+/* #root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+} */
+body {
+  background-color: rgb(12, 1, 18);
+ 
+  color: var(--foreground);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Footer */
+.icon:hover {
+  cursor: pointer;
+  font-size: 75px;
+  font-weight: 400;
+  color: aqua;
+}
+
+.profileicon:hover {
+  color: aqua;
+
+}
+
+/* footer */
+.policy {
+  color: rgb(182, 7, 7);
+}
+
+.policy:hover {
+  color: aqua;
+}
+
+.contact {
+  opacity: 0.8;
+}
+
+.contact:hover {
+  opacity: 1;
+  color: aqua;
+  font-size: 40px;
+}
+
+.myphoto{
+  border-radius: 49%;
+}
+/* login and signin */
+.loginpage {
+  border-radius: 2%;
+
+  border: 1px solid gray;
+  box-shadow: 5px 2px 5px whitesmoke;
+
+
+}
+
+/* profile */
+.profile {
+  border: 2px solid gray;
+  border-radius: 10px;
+}
+
+.profile:hover {
+  color: aqua;
+  background-color: aliceblue;
+  cursor: pointer;}
+
+  /* Founr */
+
+  .Found:hover{
+        box-shadow: 5px 2px 5px whitesmoke;
+         cursor: pointer;
+  }
+  .Found button:hover{
+    background-color: #ededed;
+    color:black;
+  }
