@@ -12,7 +12,7 @@ const SearchItem = () => {
     const id = searchParams.get("id");
 
     async function find() {
-        let data = await axios.post("http://localhost:1919/item", { id });
+        let data = await axios.post("https://lostfound-3b7h.onrender.com/item", { id });
        
         setitem(data.data.data);
         setfounder(data.data.founder);
