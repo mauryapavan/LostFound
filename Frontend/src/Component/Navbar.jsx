@@ -23,7 +23,7 @@ const Navbar = ({ user }) => {
     async function search() {
       
 
-        let result=await axios.post("http://localhost:1919/search",{city});
+        let result=await axios.post("https://lostfound-3b7h.onrender.com/search",{city});
       
         navigate("/search", { state: result.data });
         setCity("");
