@@ -14,10 +14,7 @@ const Search = () => {
   
     let navigate=useNavigate();
 
-   
-
-
-    const mapContainer = useRef(null);
+   const mapContainer = useRef(null);
     const map = useRef(null);
     const tokyo = { lng: 139.753, lat: 35.6844 };
     const zoom = 10;
