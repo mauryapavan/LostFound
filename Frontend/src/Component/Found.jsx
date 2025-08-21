@@ -22,7 +22,7 @@ const Found = () => {
 
     async function adddata() {
         if (token) {
-            let item = await axios.post("http://localhost:1919/myitem", { token });
+            let item = await axios.post("https://lostfound-3b7h.onrender.com/myitem", { token });
            setData(item.data);
         }
         else {
@@ -32,7 +32,7 @@ const Found = () => {
 
     async function deletitem(id){
      
-        let item = await axios.patch("http://localhost:1919/myitem", { token ,id});
+        let item = await axios.patch("https://lostfound-3b7h.onrender.com/myitem", { token ,id});
 
         let {status,message}=item.data;
         if(status){
