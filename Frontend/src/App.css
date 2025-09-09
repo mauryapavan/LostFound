@@ -51,7 +51,7 @@ body {
 /* Footer */
 .icon:hover {
   cursor: pointer;
-  font-size: 75px;
+ 
   font-weight: 400;
   color: aqua;
 }
@@ -77,7 +77,7 @@ body {
 .contact:hover {
   opacity: 1;
   color: aqua;
-  font-size: 40px;
+  
 }
 
 .myphoto{
