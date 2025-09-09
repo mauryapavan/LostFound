@@ -22,6 +22,7 @@ export default function Home() {
       center: [ 78.9629, 20.5937 ],
       zoom: zoom
     });
+    map.current.setStyle(maptilersdk.MapStyle.HYBRID);
 
   }, []);
 
