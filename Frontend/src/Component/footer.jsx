@@ -11,10 +11,10 @@ const Footer = () => {
                 <img className="myphoto w-sm h-sm" src="https://res.cloudinary.com/dop3yq9to/image/upload/v1753532469/Edusphere/rnyognn68qnpnx9rh7b2.jpg" alt="" />
                 <h4 className="mt-5 text-2xl">maurya pawan</h4>
                 <div className="flex">
-                    <a href="https://www.instagram.com/mauryapavan662/" className="m-2 text-2xl contact"><FontAwesomeIcon icon={faInstagramSquare} /></a>
+                    <a href="https://www.instagram.com/mauryapavan662/" className="m-2 text-2xl contact  transition duration-300 hover:scale-110 hover:-translate-y-1 "><FontAwesomeIcon icon={faInstagramSquare} /></a>
                     
-                    <a href="www.linkedin.com/in/pawan-maurya-494455339" className="m-2 text-2xl contact"><FontAwesomeIcon icon={faLinkedin} /></a>
-                    <a href="https://github.com/mauryapavan?tab=repositories" className="m-2 text-2xl contact"><FontAwesomeIcon icon={faGithub} /></a>
+                    <a href="www.linkedin.com/in/pawan-maurya-494455339" className="m-2 text-2xl contact  transition duration-300 hover:scale-110 hover:-translate-y-1 "><FontAwesomeIcon icon={faLinkedin} /></a>
+                    <a href="https://github.com/mauryapavan?tab=repositories" className="m-2 text-2xl contact  transition duration-300 hover:scale-110 hover:-translate-y-1 "><FontAwesomeIcon icon={faGithub} /></a>
 
                 </div>
             </div>
