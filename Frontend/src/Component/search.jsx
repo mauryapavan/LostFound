@@ -29,6 +29,7 @@ const Search = () => {
             center: [data.center[0], data.center[1]],
             zoom: zoom
         });
+        map.current.setStyle(maptilersdk.MapStyle.HYBRID);
 
         // Add navigation controls
         map.current.addControl(new maplibregl.NavigationControl(), "top-right");
