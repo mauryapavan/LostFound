@@ -51,11 +51,7 @@ body {
 /* Footer */
 .icon:hover {
   cursor: pointer;
-<<<<<<< HEAD
-  
-=======
- 
->>>>>>> de8b4fe3799935145a9763df5f51a7b04c94fc0b
+
   font-weight: 400;
   color: aqua;
 }
