@@ -17,6 +17,12 @@ import methodOverride from 'method-override';
 import deleteitem from "./delete/deleteitem.js";
 import users from "./Model/userModel.js";
 
+import NewMessage from "./chat/newmessage.js";
+import Getconversation from "./chat/getconversation.js";
+
+import addContact from "./chat/addContact.js";
+import findContact from "./chat/findContact.js";
+
 
 
 dotenv.config();
@@ -32,6 +38,8 @@ app.use(methodOverride('_method'));
 
 const upload = multer({ storage });
 
+
+
 dbconnect()
   .then(() => {
     console.log("succesfully connect database ")
@@ -39,25 +47,34 @@ dbconnect()
   .catch((err) => {
     console.log(err);
   })
-
+ 
 async function dbconnect() {
  
   await mongoose.connect(process.env.mongo_url);
 }
 
+
+// 🧠 Store online users
+
+
 app.get("/",(req,res)=>{
     res.send("hii i am pawan maurya")
 })
 
-
+// Send message
+app.post("/message", NewMessage);
+// Get conversation between 2 users
+app.get("/messages",Getconversation);
+// addcontact
+app.post("/newConatect",addContact);
+// findcontact
+app.post("/findConatect",findContact);
 
 app.post("/newfound", upload.single('file'),authrization,addItem );
-
 app.post("/auth",auth);
 app.post("/login",Login);
 app.post("/signup",Signup);
 app.post("/search",location,search);
-
 app.post("/item",async(req,res)=>{
   let {id}=req.body;
   let data = await items.findOne({_id:id});
@@ -73,6 +90,7 @@ app.post("/myitem",authrization,async(req,res)=>{
 app.patch("/myitem",authrization,deleteitem)
 
 
-app.listen(process.env.port, () => {
-  console.log("app is listen on 3333")
-})
+const PORT = process.env.port || 3333;
+app.listen(PORT, () => {
+  console.log(`✅ Server running on http://localhost:${PORT}`);
+});

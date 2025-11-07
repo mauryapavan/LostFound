@@ -23,7 +23,7 @@ const Navbar = ({ user }) => {
     async function search() {
       
 
-        let result=await axios.post("http://localhost:1919/search",{city});
+        let result=await axios.post("https://lostfound-3b7h.onrender.com/search",{city});
       
         navigate("/search", { state: result.data });
         setCity("");
@@ -36,7 +36,7 @@ const Navbar = ({ user }) => {
 
             <nav className="flex items-center justify-between p-1 sm:p-3 sm:p-6 lg:px-8" aria-label="Global" style={{ color: "aliceblue" }}>
                 <div className="flex lg:flex-1 text-center">
-                    <a href="/" className="sm:m-1.5 sm:p-1.5 text-3xl sm:text-5xl icon ">
+                    <a href="/" className="sm:m-1.5 sm:p-1.5 text-3xl sm:text-5xl icon  transition duration-300 hover:scale-120 hover:-translate-y-1  ">
 
                         <FontAwesomeIcon icon={faMagnifyingGlassLocation} className="" />
 

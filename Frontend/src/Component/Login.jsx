@@ -43,12 +43,13 @@ const Login = ({setuser}) => {
     async function signup(e) {
         e.preventDefault();
         try {
-            let data = await axios.post("http://localhost:1919/login",input)
+            let data = await axios.post("https://lostfound-3b7h.onrender.com/login",input)
             const { status, message, token,user } =  data.data;
            
             if (status) {
                 if (token) {
                     Cookies.set("token", JSON.stringify(token), { expires: 1 }); // 7 days
+                    Cookies.set("user", JSON.stringify(user.email), { expires: 1 }); // 7 days
                     setuser(user)
                 }
             handleSuccess(message);

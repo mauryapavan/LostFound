@@ -1,6 +1,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPeopleArrowsLeftRight } from "@fortawesome/free-solid-svg-icons";
+import Cookies from "js-cookie";
 
 
 const SearchItem = () => {
@@ -10,13 +13,28 @@ const SearchItem = () => {
 
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
+    let { user } = Cookies.get();
+    let navigate = useNavigate();
 
     async function find() {
-        let data = await axios.post("http://localhost:1919/item", { id });
-       
+        let data = await axios.post("https://lostfound-3b7h.onrender.com/item", { id });
+
         setitem(data.data.data);
         setfounder(data.data.founder);
     }
+    const goTochat = async (rec) => {
+         const newsender = user.replace(/"/g, '');
+        let data = await axios.post("https://lostfound-3b7h.onrender.com/newConatect", { sender: newsender, receiver: rec });
+        let { status }=data;
+        if (status) {
+            navigate(`/chat?sender=${user}&receiver=${rec}`);
+        }
+       else{
+         console.log(data.message);
+        }
+
+
+    };
 
     useEffect(() => {
 
@@ -33,7 +51,10 @@ const SearchItem = () => {
                 <h1 className="sm:text-xl" >Name:{founder.name}</h1>
                 <h1 className="sm:text-xl" >Email:{founder.email}</h1>
                 <h1 className="sm:text-xl" >Phone No.:{founder.number}</h1>
-
+                <div className="m-5 p-5 w-[10rem] profile" onClick={() => { goTochat(founder.email) }}>
+                    <FontAwesomeIcon icon={faPeopleArrowsLeftRight} className="text-5xl sm:text-7xl text-green-900" />
+                    <p>Start Chat</p>
+                </div>
 
             </div>
         </div>

@@ -20,7 +20,7 @@ const Login= async (req,res)=> {
       const auth = await bcrypt.compare(password.trim(), user.password.trim())
       
       if (!auth) {
-        return NextResponse.json({ message: 'Incorrect password or email',status:false })
+        return res.json({ message: 'Incorrect password or email',status:false })
       }
       const token = jwt.sign({ email: user.email }, process.env.secret_token, { expiresIn: '168h' });
   

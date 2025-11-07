@@ -25,7 +25,7 @@ const Newfound = () => {
     //  toastcontainer
     const handleError = (err) =>
         toast.error(err, {
-            position: "bottom-left",
+            position: "top-left",
         });
     const handleSuccess = (msg) =>
         toast.success(msg, {
@@ -64,6 +64,7 @@ const Newfound = () => {
       }
 
     async function submit(e) {
+         e.preventDefault();
         if(location==null){
                  handleError("please allow to loction on your browser")
                  return ;
@@ -78,14 +79,14 @@ const Newfound = () => {
         formData.append('location', location.latitude);
         formData.append('location', location.longitude);
        
-        e.preventDefault();
+       
         if (token) {
           setloading(!loading);
             try {
 
 
                 const { data } = await axios.post(
-                    "http://localhost:1919/newfound",formData );
+                    "https://lostfound-3b7h.onrender.com/newfound",formData );
                 const { status, message } = data;
                 
                 if (status) {
@@ -110,6 +111,7 @@ const Newfound = () => {
     return (
         <div className="flex-col justify-self-center mt-6   " style={{ color: "whitesmoke" }} >
           <p><span style={{color:"red"}}>Note &rarr; </span> Submit this form where you found item </p>
+          
 
             {loading == true ? <div><h1 className="text-3xl">uploading ........</h1></div> :
                 <div className=" flex-col justify-items-center  align-items-center p-3 m-3 sm:p-5 sm:m-5 backdrop-blur-sm loginpage backdrop-brightness-130 ">

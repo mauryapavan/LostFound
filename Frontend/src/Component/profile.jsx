@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import Cookies from 'js-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBookAtlas, faCircleUser, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
+import { faBookAtlas, faCircleUser, faCommentDollar, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios'
 
@@ -16,6 +16,9 @@ const Profile = () => {
     }
     function Newfound() {
         navigate("/NewFound");
+    }
+    function gotochat() {
+         navigate(`/chatbar`);
     }
 
     function logout() {
@@ -30,7 +33,7 @@ const Profile = () => {
             
             
             if (token) {
-                const { data } = await axios.post("http://localhost:1919/auth", { token });
+                const { data } = await axios.post("https://lostfound-3b7h.onrender.com/auth", { token });
                 const { status, user } = data;
                 if (status) {
                    setuser(user);
@@ -62,6 +65,11 @@ const Profile = () => {
                 </div>
             </div>
             <div className="flex  text-center justify-center  sm:flex-nowrap flex-wrap">
+                <div className="m-5 p-5 w-1/2 profile" onClick={gotochat}>
+                    <FontAwesomeIcon icon={faCommentDollar} className="text-5xl sm:text-7xl text-green-900" />
+
+                    <p >Messages</p>
+                </div>
 
                 <div className="m-5 p-5 w-1/2 profile" onClick={Found} >
                     <FontAwesomeIcon icon={faBookAtlas} className="text-5xl sm:text-7xl" />
@@ -71,8 +79,9 @@ const Profile = () => {
                 <div className="m-5 p-5 w-1/2 profile" onClick={Newfound}>
                     <FontAwesomeIcon icon={faMoneyBill} className="text-5xl sm:text-7xl" />
 
-                    <p >found new items then create new form</p>
+                    <p  className="text-sm">found new items then create new form</p>
                 </div>
+                 
             </div>
             <button type="button" onClick={logout} className="w-60 cursor-pointer flex-none sm:px-3.5 rounded-md bg-indigo-500 px-1.5 py-2.5 text-sm  text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Log out</button>
         </div>

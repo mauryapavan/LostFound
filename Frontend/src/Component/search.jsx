@@ -32,6 +32,7 @@ const Search = () => {
             center: [data.center[0], data.center[1]],
             zoom: zoom
         });
+        map.current.setStyle(maptilersdk.MapStyle.HYBRID);
 
         // Add navigation controls
         map.current.addControl(new maplibregl.NavigationControl(), "top-right");
@@ -84,9 +85,9 @@ const Search = () => {
 
 
     return (
-        <div>
-            <div className="map-wrap p-2 m-2">
-                <div ref={mapContainer} className="map h-[35rem] sm:h-[42rem] lg:h-[45rem] w-full " />
+        <div className='p-7'>
+            <div className="map-wrap md:mx-4 sm:px-5 m-4  sm:py-3 lg:mx-5 flex flex-col lg:w-1/2">
+                <div ref={mapContainer} className="map h-[30rem] sm:h-[42rem] lg:h-[40rem] w-full  " />
             </div>
         </div>
     )

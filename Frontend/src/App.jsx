@@ -17,21 +17,26 @@ import axios from 'axios'
 import { toast, ToastContainer } from 'react-toastify'
 import { useEffect } from 'react'
 import SearchItem from './Component/searcheditem.jsx'
+import Chat from './Component/chat.jsx'
+import Chatbar from './Component/chatbar.jsx'
 
 
 function App() {
   let [user, setuser] = useState();
+
   useEffect(() => {
     const verifyCookie = async () => {
       //!cookies.token
+      // console.log(Cookies.get())
       let {token}=Cookies.get();
       const { data } = await axios.post("http://localhost:1919/auth",{token});
       const { status, user } = data;
       if(status){
+        // console.log(user)
        
       setuser(user);
       }
-       
+     
      
        
     };
@@ -52,6 +57,9 @@ function App() {
           <Route path="/newFound" element={< Newfound />}></Route>
           <Route path="/search" element={<Search />}></Route>
           <Route path="/searcheditem" element={<SearchItem />}></Route>
+         
+           <Route path="/chat" element={<Chat/>}></Route>
+          <Route path="/chatbar" element={<Chatbar/>}></Route>
 
 
         </Routes>
