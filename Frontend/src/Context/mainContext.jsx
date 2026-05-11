@@ -10,8 +10,8 @@ export const MainContext=createContext({})
 
 
 export const MainContextProvider=({children})=>{
-   const client=axios.create({baseURL:"http://localhost:1919/api"});
-   const client2=axios.create({baseURL:"http://localhost:1919/chat"});
+   const client=axios.create({baseURL:"https://lostfound-3b7h.onrender.com/api"});
+   const client2=axios.create({baseURL:"https://lostfound-3b7h.onrender.com/chat"});
    let navigate=useNavigate()
 
     let [userData,setUserData]=useState({name:"",email:"",number:""});
