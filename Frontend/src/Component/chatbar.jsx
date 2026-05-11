@@ -9,7 +9,7 @@ import Chat from "./chat";
 import io from 'socket.io-client'
 import { MainContext } from "../Context/mainContext";
 
-const socket = io('http://localhost:1919');
+const socket = io('https://lostfound-3b7h.onrender.com');
 
 export default function Chatbar() {
     let {client2,userData,fetchUser}=useContext(MainContext)
