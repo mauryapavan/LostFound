@@ -1,9 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPeopleArrowsLeftRight } from "@fortawesome/free-solid-svg-icons";
 import Cookies from "js-cookie";
+import { MainContext } from "../Context/mainContext";
 
 
 const SearchItem = () => {
@@ -13,33 +14,31 @@ const SearchItem = () => {
 
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
-    let { user } = Cookies.get();
+    let { userData,fetchUser } = useContext(MainContext)
     let navigate = useNavigate();
 
     async function find() {
-        let data = await axios.post("https://lostfound-3b7h.onrender.com/item", { id });
+        let data = await axios.post("http://localhost:1919/api/item", { id });
 
        
         setitem(data.data.data);
         setfounder(data.data.founder);
     }
     const goTochat = async (rec) => {
-         const newsender = user.replace(/"/g, '');
-        let data = await axios.post("https://lostfound-3b7h.onrender.com/newConatect", { sender: newsender, receiver: rec });
+        let data = await axios.post("http://localhost:1919/chat/newContact", { sender:userData.email, receiver: rec });
         let { status }=data;
         if (status) {
-            navigate(`/chat?sender=${user}&receiver=${rec}`);
+            navigate(`/chatbar`);
         }
        else{
-         console.log(data.message);
+         console.log(data);
         }
 
 
     };
 
     useEffect(() => {
-
-        find();
+       find();
     }, [])
 
     return (

@@ -1,33 +1,38 @@
-
-
-
 import { faMagnifyingGlassLocation, faUser } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import react, { useEffect, useState } from "react"
+import react, { useContext, useEffect, useState } from "react"
 
 import { useNavigate } from "react-router-dom";
+import { MainContext } from "../Context/mainContext.jsx";
+import Cookies from "js-cookie";
 
 
 
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
+    let [isLogin,setIsLogin]=useState(false);
     let navigate = useNavigate();
     const [city, setCity] = useState("");
-  
-
+    const {userData,fetchUser,searchItem}=useContext(MainContext)
+   
     function navprof() {
         navigate("/Profile")
     }
 
     async function search() {
-      
-
-        let result=await axios.post("https://lostfound-3b7h.onrender.com/search",{city});
-      
-        navigate("/search", { state: result.data });
-        setCity("");
+       searchItem(city)
+       setCity("");
     }
+    useEffect(()=>{
+        if(Cookies.get('token')){
+            setIsLogin(true)
+        }
+    },[userData])
+
+    useEffect(()=>{
+        fetchUser()
+    },[])
 
 
     return (
@@ -51,7 +56,7 @@ const Navbar = ({ user }) => {
                     <button type="submit" onClick={search} className="flex-none sm:px-3.5 rounded-md bg-indigo-500 px-1 py-2.5 text-sm  text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Search</button>
                 </div>
 
-                {user ?
+                {isLogin ?
                     <div className="md-flex lg:flex lg:flex-1 lg:justify-end mr-1 sm:mr-5 "><a onClick={navprof} className="profileicon"><FontAwesomeIcon icon={faUser} className="text-2xl sm:text-4xl" /></a></div>
                     :
                     <div className="md-flex lg:flex lg:flex-1 lg:justify-end mr-1 sm:mr-5">

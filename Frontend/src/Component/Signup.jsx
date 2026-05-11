@@ -1,67 +1,21 @@
-
- import axios from "axios";
-import react, { useState } from "react"
-import { useNavigate } from "react-router-dom";
- import { ToastContainer, toast } from "react-toastify";
- import Cookies from 'js-cookie';
+import react, { useContext, useState } from "react"
+import { MainContext } from "../Context/mainContext";
 
 
 const Signup=()=>{
-   let navigate=useNavigate()
-   if(Cookies.get('token')){
-           navigate("/");
-       }
+     let {Register}=useContext(MainContext)
+   
      let [input, setinput] = useState({ name: "", email: "", password: "",number:"" })
     const handleOnChange = (e) => {
-      
-        let { name, value } = e.target;
-        
-
-        setinput({
-            ...input,
-            [name]: value,
-        });
+      let { name, value } = e.target;
+      setinput({...input,[name]: value,});
     };
-
-
-//  toastcontainer
-    const handleError = (err) =>
-    toast.error(err, {
-      position: "bottom-left",
-    });
-  const handleSuccess = (msg) =>
-    toast.success(msg, {
-      position: "bottom-right",
-    })
-
-
 
   async  function  signup(e) {
         e.preventDefault();
-        try {
-            let data= await axios.post("https://lostfound-3b7h.onrender.com/signup",input)
-           
-            const { status, message } =  data.data;
+        Register(input)
+        setinput({ name: "", email: "", password: "",number:"" })
         
-            if (status) {
-                handleSuccess(message);
-                setTimeout(() => {
-                    navigate("/Login")
-                    
-                }, 1000);
-            } else {
-                handleError(message);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-        setinput({
-            ...input,
-            email: "",
-            password: "",
-            name: "",
-            number:0
-        })
     }
 
    
@@ -73,23 +27,23 @@ const Signup=()=>{
                 </div>
                 <form action="" onSubmit={signup}>
                     <div className="sm:p-5 sm:m-5 p-2 m-2">
-                        <label for="name" class="sr-only">Name</label>
+                        <label for="name" className="sr-only">Name</label>
                         <input id="name" name="name" value={input.name} onChange={handleOnChange} type="text" required class="w-50 sm:w-90 bg-white/5  p-2 sm:p-3.5 text-xl" placeholder="your name" />
 
                     </div>
                     <div className="sm:p-5 sm:m-5 p-2 m-2">
-                        <label for="email-address" class="sr-only">Email address</label>
+                        <label for="email-address" className="sr-only">Email address</label>
                         <input id="email-address" name="email" value={input.email} type="email" onChange={handleOnChange} required class="w-50 sm:w-90 bg-white/5 p-2 sm:p-3.5 text-xl" placeholder=" your email" />
 
                     </div>
                      <div className="sm:p-5 sm:m-5 p-2 m-2">
-                        <label for="email-address" class="sr-only">Email address</label>
+                        <label for="email-address" className="sr-only">Email address</label>
                         <input id="number" name="number" value={input.number} type="number" onChange={handleOnChange} required class="w-50 sm:w-90 bg-white/5 p-2 sm:p-3.5 text-xl" placeholder=" your  mobile number" />
 
                     </div>
 
                     <div className="sm:p-5 sm:m-5 p-2 m-2">
-                        <label for="password" class="sr-only">password</label>
+                        <label for="password" className="sr-only">password</label>
                         <input id="password" name="password" type="password" value={input.password} onChange={handleOnChange} required class="w-50 sm:w-90 bg-white/5  p-2 sm:p-3.5 text-xl" placeholder="Set your password" />
 
                     </div>

@@ -1,73 +1,18 @@
-
-
-
-import react, { useState } from "react"
+import react, { useContext, useState } from "react"
 import { ToastContainer, toast } from "react-toastify";
-
-import Cookies from 'js-cookie';
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { MainContext } from "../Context/mainContext";
 
 const Login = ({setuser}) => {
-    let navigate=useNavigate();
-
-    if(Cookies.get('token')){
-        navigate("/");
-    }
-  
+    const {handleLogin}=useContext(MainContext)
     let [input, setinput] = useState({ email: "", password: "" })
     const handleOnChange = (e) => {
-
-        let { name, value } = e.target;
-
-
-        setinput({
-            ...input,
-            [name]: value,
-        });
-    };
-
-
-    //  toastcontainer
-    const handleError = (err) =>
-        toast.error(err, {
-            position: "bottom-left",
-        });
-    const handleSuccess = (msg) =>
-        toast.success(msg, {
-            position: "bottom-right",
-        })
-
-
-
+       let { name, value } = e.target;
+        setinput({...input,[name]: value,});
+     };
     async function signup(e) {
-        e.preventDefault();
-        try {
-            let data = await axios.post("https://lostfound-3b7h.onrender.com/login",input)
-            const { status, message, token,user } =  data.data;
-           
-            if (status) {
-                if (token) {
-                    Cookies.set("token", JSON.stringify(token), { expires: 1 }); // 7 days
-                    Cookies.set("user", JSON.stringify(user.email), { expires: 1 }); // 7 days
-                    setuser(user)
-                }
-            handleSuccess(message);
-               setTimeout(() => {
-                    navigate("/")
-                }, 1000);
-            } else {
-                handleError(message);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-        setinput({
-            ...input,
-            email: "",
-            password: "",
-
-        })
+          e.preventDefault();
+          handleLogin(input)
+          setinput({ email: "", password: "" })
     }
 
 

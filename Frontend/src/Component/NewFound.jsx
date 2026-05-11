@@ -1,15 +1,17 @@
 
 
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import Cookies from 'js-cookie';
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { MainContext } from "../Context/mainContext";
 
 
 
 const Newfound = () => {
+    let {client}=useContext(MainContext)
     let navigate=useNavigate()
     const [location, setLocation] = useState(null);
     let [batch, setbatch] = useState({ name: "", description: "" });
@@ -20,7 +22,6 @@ const Newfound = () => {
 
         setbatch({ ...batch, [name]: value });
     }
-    let { token } = Cookies.get();
 
     //  toastcontainer
     const handleError = (err) =>
@@ -37,10 +38,12 @@ const Newfound = () => {
     // geo location
 
     const geolocation = () => {
+     
         if (navigator.geolocation) {
+            console.log(navigator.geolocation)
             navigator.geolocation.getCurrentPosition(
                 (position) => {
-                    
+                    console.log(position)
                     setLocation({
                         latitude: position.coords.latitude,
                         longitude: position.coords.longitude,
@@ -54,6 +57,8 @@ const Newfound = () => {
             console.log("Geolocation is not supported by this browser.");
         }
 
+       
+
     }
     useEffect(() => {
         geolocation();
@@ -64,6 +69,8 @@ const Newfound = () => {
       }
 
     async function submit(e) {
+        
+          geolocation() 
          e.preventDefault();
         if(location==null){
                  handleError("please allow to loction on your browser")
@@ -79,14 +86,9 @@ const Newfound = () => {
         formData.append('location', location.latitude);
         formData.append('location', location.longitude);
        
-       
-        if (token) {
           setloading(!loading);
             try {
-
-
-                const { data } = await axios.post(
-                    "https://lostfound-3b7h.onrender.com/newfound",formData );
+                const { data } = await client.post("/newfound",formData );
                 const { status, message } = data;
                 
                 if (status) {
@@ -99,13 +101,7 @@ const Newfound = () => {
             } catch (error) {
                 console.log(error);
             }
-            setbatch({ name: "", description: "" })
-        }
-        else {
-            handleError("you are not log in please log in");
-            navigate("/Login");
-        }
-        
+            setbatch({ name: "", description: "" }) 
       setloading(false);  
     }
     return (
@@ -142,7 +138,7 @@ const Newfound = () => {
                         </div>
 
                         <div className="sm:p-5 sm:m-5 p-2 m-2 text-center">
-                            <button><button type="submit" className="w-45 sm:w-60 flex-none sm:px-3.5 rounded-md bg-indigo-500 px-1.5 py-2.5 text-sm  text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">add Items</button></button>
+                            <button type="submit" className="w-45 sm:w-60 flex-none sm:px-3.5 rounded-md bg-indigo-500 px-1.5 py-2.5 text-sm  text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">add Items</button>
                         </div>
                     </form>
 

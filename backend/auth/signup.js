@@ -6,11 +6,7 @@ import users from "../Model/userModel.js";
   
 
 const Signup=async(req,res)=> {
-
-    
-
-     
-     let data=req.body;
+    let data=req.body;
     
 
     try {

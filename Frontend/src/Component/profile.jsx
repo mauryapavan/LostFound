@@ -1,14 +1,16 @@
 
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import Cookies from 'js-cookie';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookAtlas, faCircleUser, faCommentDollar, faMoneyBill } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
-import axios from 'axios'
+
+import { MainContext } from "../Context/mainContext";
 
 
 const Profile = () => {
+    let {userData,fetchUser}=useContext(MainContext)
     let [user, setuser] = useState({name:"",email:"",number:"",_id:""});
     let navigate = useNavigate();
     function Found() {
@@ -25,31 +27,8 @@ const Profile = () => {
         Cookies.remove('token');
         window.location.href = "/"; // causes full page reload
     }
-
-    useEffect(() => {
-        const verifyCookie = async () => {
-            //!cookies.token
-            let { token } = Cookies.get();
-            
-            
-            if (token) {
-                const { data } = await axios.post("https://lostfound-3b7h.onrender.com/auth", { token });
-                const { status, user } = data;
-                if (status) {
-                   setuser(user);
-                }
-            }
-            else{
-                navigate("/Login")
-            }
-
-
-
-
-        };
-        verifyCookie();
-    }, [])
-
+      
+    
     return (
         <div className="flex flex-col justify-items-center align-items-center p-5 m-5 text-center" style={{ color: "whitesmoke" }}>
             <div className="flex flex-col sm:p-5 sm:m-5 p-1 mb-5 mr-1 ml-1 ">
@@ -59,7 +38,7 @@ const Profile = () => {
 
                 </div>
                 <div>
-                    <h2>{user.name}  | {user.email}  | {user.number}
+                    <h2>{userData.name}  | {userData.email}  | {userData.number}
                     </h2>
 
                 </div>

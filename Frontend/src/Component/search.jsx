@@ -9,12 +9,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 
 const Search = () => {
-    let location=useLocation();
-    const data =location.state;
-  
-    let navigate=useNavigate();
+    let location = useLocation();
+    const data = location.state;
 
-   const mapContainer = useRef(null);
+    let navigate = useNavigate();
+
+    const mapContainer = useRef(null);
     const map = useRef(null);
     const tokyo = { lng: 139.753, lat: 35.6844 };
     const zoom = 10;
@@ -36,7 +36,7 @@ const Search = () => {
 
         // Add markers
         data.allcoordinate.forEach((marker) => {
-          
+
             const el = document.createElement("div");
             el.style.backgroundColor = "red";
             el.style.width = "20px";
@@ -60,12 +60,12 @@ const Search = () => {
 
             // ✅ Hover effects
             el.addEventListener("mouseenter", () => {
-                 popup.addTo(map.current); // show popup on hover
+                popup.addTo(map.current); // show popup on hover
                 popup.setLngLat([marker.location[1], marker.location[0]]);
             });
 
             el.addEventListener("mouseleave", () => {
-               popup.remove(); // hide popup when hover ends
+                popup.remove(); // hide popup when hover ends
             });
 
 
@@ -77,7 +77,7 @@ const Search = () => {
 
 
 
-    }, []);
+    }, [data]);
 
 
 
@@ -85,6 +85,21 @@ const Search = () => {
         <div className='p-7'>
             <div className="map-wrap md:mx-4 sm:px-5 m-4  sm:py-3 lg:mx-5 flex flex-col lg:w-1/2">
                 <div ref={mapContainer} className="map h-[30rem] sm:h-[42rem] lg:h-[40rem] w-full  " />
+            </div>
+            <div className='flex flex-wrap'>
+                {
+                    data.allcoordinate.map((el,ind) => {
+                        return (
+                            <div key={ind} className="border-4 p-5 m-5 rounded-lg w-[15rem] flex flex-col Found">
+                                <h1 className="text-2xl" style={{ color: "red" }}>{el.name}</h1>
+                                <h3 style={{ color: "white" }}>{el.description}</h3>
+                                <img src={el.image} alt="" className="w-[12rem] h-1/2" /><br /><br />
+                                <button onClick={() => {navigate(`/searcheditem?id=${el._id}`)}} className="w-[8rem] rounded-lg bg-pink-500 py-1.5 px-4.5">Open</button>
+
+                            </div>
+                        )
+                    })
+                }
             </div>
         </div>
     )

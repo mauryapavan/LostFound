@@ -4,8 +4,7 @@ import { Schema } from "mongoose";
 const contact = new mongoose.Schema({
   sender: String,
   receiver: String,
-
-   time: {
+  time: {
     type: Date,
     default: Date.now,
 

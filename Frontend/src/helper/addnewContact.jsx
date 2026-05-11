@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-
-
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { MainContext } from "../Context/mainContext.jsx";
 
 
 
-export default function AddnewContact() {
+export default function AddnewContact({setcurr,setischat,setaddcontact}) {
     let navigate=useNavigate();
+    let {userData,client2}=useContext(MainContext)
     let [text,settext]=useState("");
-     let {  user }=Cookies.get();
+     
         //  toastcontainer
         const handleError = (err) =>
             toast.error(err, {
@@ -24,21 +22,20 @@ export default function AddnewContact() {
     async function addmember(e) {
         e.preventDefault();
         try {
-            const newsender = user.replace(/"/g, '');
-            let data = await axios.post("https://lostfound-3b7h.onrender.com/newConatect",{ sender:newsender, receiver:text})
-           let {status}=data.data;
-           console.log(data.data)
-           if(status){
-               navigate(`/chat?sender=${user}&receiver=${text}`)
-            }
-            else{
+             
+             let data = await client2.post("/newContact",{ sender:userData.email, receiver:text})
+             let {status}=data.data;
+             if(status){
+                  setcurr(text)
+                 setischat(true)
+                 setaddcontact(false)
+               }
+             else{
                 handleError(data.data.message)
-            }
-           
-           
-           
-        } catch (error) {
-            console.log(error);
+              }
+           } 
+        catch (error) {
+            handleError(error)
         }
     }
 

@@ -3,31 +3,22 @@ import express from "express";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cors from "cors";
-import Login from "./auth/login.js";
-import Signup from "./auth/signup.js";
-import auth from "./auth/auth.js";
-import multer from "multer";
-import { storage,cloudinary } from "./newFound/cloudConfig.js";
-import authrization from "./newFound/authroization.js";
-import addItem from "./newFound/additem.js";
-import search from "./search/search.js";
-import location from "./search/location.js";
-import items from "./Model/itemModel.js";
 import methodOverride from 'method-override';
-import deleteitem from "./delete/deleteitem.js";
-import users from "./Model/userModel.js";
-
-import NewMessage from "./chat/newmessage.js";
-import Getconversation from "./chat/getconversation.js";
-
-import addContact from "./chat/addContact.js";
-import findContact from "./chat/findContact.js";
-
+import http from 'http';
+import apiroutes from "./routes/api.js";
+const app = express();
+const server = http.createServer(app);
+import { Server } from "socket.io";
+import Message from "./Model/message.js";
+import chatapi from "./routes/chatapi.js";
+import Timeupdate from "./chat/updatetimeofcontacts.js";
+import items from "./Model/itemModel.js";
+const io = new Server(server, { cors: { origin: '*' } });
 
 
 dotenv.config();
 
-const app = express();
+
 
 app.use(cors());
 // parse application/x-www-form-urlencoded
@@ -36,7 +27,7 @@ app.use(bodyParser.json());
 app.use('/uploads', express.static('uploads'));
 app.use(methodOverride('_method'));
 
-const upload = multer({ storage });
+
 
 
 
@@ -47,50 +38,58 @@ dbconnect()
   .catch((err) => {
     console.log(err);
   })
- 
-async function dbconnect() {
- 
-  await mongoose.connect(process.env.mongo_url);
-}
 
+// async function dbconnect() { await mongoose.connect("mongodb://127.0.0.1:27017/lostfound"); }
+async function dbconnect() { await mongoose.connect(process.env.mongo_url); }
 
-// 🧠 Store online users
-
-
-app.get("/",(req,res)=>{
-    res.send("hii i am pawan maurya")
+app.use('/api', apiroutes);
+app.use('/chat', chatapi);
+//  Store online users
+app.get("/", (req, res) => {
+  res.send("hii i am pawan maurya")
 })
 
-// Send message
-app.post("/message", NewMessage);
-// Get conversation between 2 users
-app.get("/messages",Getconversation);
-// addcontact
-app.post("/newConatect",addContact);
-// findcontact
-app.post("/findConatect",findContact);
 
-app.post("/newfound", upload.single('file'),authrization,addItem );
-app.post("/auth",auth);
-app.post("/login",Login);
-app.post("/signup",Signup);
-app.post("/search",location,search);
-app.post("/item",async(req,res)=>{
-  let {id}=req.body;
-  let data = await items.findOne({_id:id});
-  let founder=await users.findOne({email:data.owner});
+
+const onlineMap = new Map();
+
+
+io.on('connection', (socket) => {
+  socket.on('user:online', (userId) => {
+    onlineMap.set(userId, socket.id);
+     io.emit("onlineUsers", Array.from(onlineMap.keys()));
+  });
+
+  socket.on('chat:send', async (msg) => {
+   
+    // msg: { sender,receiver, text }
+    const mg = new Message({ sender:msg.sender,receiver:msg.receiver,  message:msg.message });
+    await mg.save();
+     Timeupdate(msg.sender,msg.receiver,)
+    // Emit to recipient if online
+    const toSocket = onlineMap.get(msg.receiver);
  
-  res.json({data,founder});
-})
-app.post("/myitem",authrization,async(req,res)=>{
-  let {email}=req.body;
-  let data = await items.find({owner:email});
-  res.json(data);
-})
-app.patch("/myitem",authrization,deleteitem)
+    if (toSocket) io.to(toSocket).emit('receiveMessage', mg);
+    // emit ack to sender
+    socket.emit('receiveMessage', mg);
+  });
+
+
+
+
+
+  socket.on('disconnect', () => {
+    // remove from onlineMap (simple linear cleanup)
+    for (let [userId, sId] of onlineMap.entries()) if (sId === socket.id) onlineMap.delete(userId);
+    io.emit("onlineUsers", Array.from(onlineMap.keys()));
+    // console.log('socket disconnected', socket.id);
+  });
+});
+
+
 
 
 const PORT = process.env.port || 3333;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`✅ Server running on http://localhost:${PORT}`);
 });
