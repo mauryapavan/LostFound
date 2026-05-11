@@ -14,18 +14,18 @@ const SearchItem = () => {
 
     const [searchParams] = useSearchParams();
     const id = searchParams.get("id");
-    let { userData,fetchUser } = useContext(MainContext)
+    let { userData,fetchUser,client,client2 } = useContext(MainContext)
     let navigate = useNavigate();
 
     async function find() {
-        let data = await axios.post("http://localhost:1919/api/item", { id });
+        let data = await client.post("/item", { id });
 
        
         setitem(data.data.data);
         setfounder(data.data.founder);
     }
     const goTochat = async (rec) => {
-        let data = await axios.post("http://localhost:1919/chat/newContact", { sender:userData.email, receiver: rec });
+        let data = await client2.post("/newContact", { sender:userData.email, receiver: rec });
         let { status }=data;
         if (status) {
             navigate(`/chatbar`);
